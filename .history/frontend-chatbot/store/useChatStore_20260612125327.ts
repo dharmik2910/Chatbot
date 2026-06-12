@@ -41,8 +41,8 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         set({ userId: storedUserId });
 
         const API_URL =
-            process.env.NEXT_PUBLIC_API_URL ||
-            "https://chatbot-1-02fl.onrender.com";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://chatbot-1-02fl.onrender.com";
         const socket = io(API_URL);
         set({ socket });
 
