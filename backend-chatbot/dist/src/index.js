@@ -22,7 +22,9 @@ const io = new socket_io_1.Server(server, {
         methods: ["GET", "POST"]
     }
 });
+console.log("Creating Socket.IO server");
 (0, socket_1.setupSocket)(io);
+console.log("Socket.IO initialized");
 const PORT = process.env.PORT || 3001;
 app.get('/', (req, res) => {
     res.send('Chatbot Server is running');

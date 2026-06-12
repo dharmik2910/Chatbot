@@ -22,7 +22,11 @@ const io = new Server(server, {
     }
 });
 
+console.log("Creating Socket.IO server");
+
 setupSocket(io);
+
+console.log("Socket.IO initialized");
 
 const PORT = process.env.PORT || 3001;
 
