@@ -19,7 +19,7 @@ interface User {
 }
 
 export default function AdminDashboard() {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://chatbot-1-02f1.onrender.com";
     const [socket, setSocket] = useState<Socket | null>(null);
     const [chats, setChats] = useState<User[]>([]);
     const [selectedChatId, setSelectedChatId] = useState<string | null>(null);
