@@ -132,7 +132,7 @@ npx ts-node scripts/deleteChatData.ts
 - **TypeScript** - Type safety
 - **Prisma** - ORM and database toolkit
 - **Socket.io** - WebSocket server
-- **SQLite** - Database (default, can be changed to PostgreSQL)
+- **SQLite** - Database
 
 ## Folder Overview
 
@@ -149,7 +149,6 @@ npx ts-node scripts/deleteChatData.ts
 - `npm run dev` - Start Next.js development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
 
 ### Server
 - `npm run dev` - Start development server with nodemon
@@ -164,8 +163,4 @@ cd backend-chatbot
 npx prisma studio
 ```
 
-### Reset Database
-```bash
-cd backend-chatbot
-npx prisma migrate reset
-```
+

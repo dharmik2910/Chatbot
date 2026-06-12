@@ -18,7 +18,7 @@ export default function Home() {
                     </svg>
                 </div>
                 <h1 className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 mb-6 leading-tight">
-                    Welcome to Aimbrill
+                    Welcome to Chatbot
                 </h1>
                 <p className="text-xl md:text-2xl text-blue-100 mb-4 font-light">
                     Your AI-powered support assistant
