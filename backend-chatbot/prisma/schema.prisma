@@ -19,6 +19,8 @@ model Message {
   id        String   @id @default(uuid())
   content   String
   sender    String   // "user" or "admin"
+  isAi      Boolean  @default(false)
+  status    String   @default("SENT") // SENT, DELIVERED, READ
   createdAt DateTime @default(now())
   userId    String
   user      User     @relation(fields: [userId], references: [id])

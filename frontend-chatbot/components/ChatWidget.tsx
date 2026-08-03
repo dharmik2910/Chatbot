@@ -2,7 +2,7 @@
 
 import { useChatStore } from '@/store/useChatStore';
 import clsx from 'clsx';
-import { MessageCircle, Send, X } from 'lucide-react';
+import { MessageCircle, Send, X, Bot, Check, CheckCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
 export default function ChatWidget() {
@@ -87,7 +87,7 @@ export default function ChatWidget() {
                                     > 
                                         {msg.sender !== 'user' && (
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold text-xs shadow-md flex-shrink-0">
-                                                A
+                                                {msg.isAi ? <Bot size={16} /> : "A"}
                                             </div>
                                         )}
                                         <div className={clsx(
@@ -97,12 +97,15 @@ export default function ChatWidget() {
                                                 : "bg-white text-gray-900 border border-gray-200 rounded-bl-sm"
                                         )}>
                                             <p className="text-sm leading-relaxed font-medium">{msg.content}</p>
-                                            <span className={clsx(
-                                                "text-xs block mt-2",
-                                                msg.sender === 'user' ? "text-blue-100" : "text-gray-400"
+                                            <div className={clsx(
+                                                "text-xs flex items-center mt-2 gap-1",
+                                                msg.sender === 'user' ? "text-blue-100 justify-end" : "text-gray-400 justify-start"
                                             )}>
-                                                {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                            </span>
+                                                <span>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                {msg.sender === 'user' && (
+                                                    msg.status === 'READ' ? <CheckCheck size={14} className="text-blue-200" /> : <Check size={14} className="text-blue-200/70" />
+                                                )}
+                                            </div>
                                         </div>
                                         {msg.sender === 'user' && (
                                             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs shadow-md flex-shrink-0">
@@ -130,6 +133,24 @@ export default function ChatWidget() {
                                 </div>
                             </div>
                         )}
+                    </div>
+
+                    {/* Quick Replies */}
+                    <div className="px-4 pb-3 pt-2 bg-white/80 backdrop-blur-xl border-t border-gray-100 flex flex-wrap gap-2 max-h-32 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                        {[
+                            "I need help with my account",
+                            "What are your pricing plans?",
+                            "Can I speak to a human?",
+                            "Report a bug"
+                        ].map((reply, i) => (
+                            <button
+                                key={i}
+                                onClick={() => sendMessage(reply)}
+                                className="whitespace-nowrap bg-blue-50/80 text-blue-600 text-xs font-medium px-3 py-1.5 rounded-full border border-blue-200/50 hover:bg-blue-100 hover:border-blue-300 transition-all shadow-sm"
+                            >
+                                {reply}
+                            </button>
+                        ))}
                     </div>
 
                     {/* Input Area */}

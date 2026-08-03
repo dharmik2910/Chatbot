@@ -3,6 +3,7 @@
 import clsx from 'clsx';
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { io, type Socket } from 'socket.io-client';
+import { Bot, Check, CheckCheck } from 'lucide-react';
 
 interface Message {
     id: string;
@@ -10,6 +11,8 @@ interface Message {
     sender: string;
     createdAt: string;
     userId: string;
+    isAi?: boolean;
+    status?: string;
 }
 
 interface User {
@@ -56,6 +59,19 @@ export default function AdminDashboard() {
             if (data.userId === selectedChatId && data.sender === 'user') {
                 setUserTyping(data.typing);
             }
+        });
+
+        newSocket.on('messages_read', (data: { userId: string, reader: string }) => {
+            setMessages(prev => prev.map(msg => {
+                if (msg.userId === data.userId) {
+                    const senderToUpdate = data.reader === 'user' ? 'admin' : 'user';
+                    if (msg.sender === senderToUpdate && msg.status !== 'READ') {
+                        return { ...msg, status: 'READ' };
+                    }
+                }
+                return msg;
+            }));
+            fetchChats();
         });
 
         return () => {
@@ -107,6 +123,9 @@ export default function AdminDashboard() {
     const handleSelectChat = (userId: string) => {
         setSelectedChatId(userId);
         fetchMessages(userId);
+        if (socket) {
+            socket.emit('mark_as_read', { userId, sender: 'admin' });
+        }
     };
 
     const handleReply = (e: FormEvent<HTMLFormElement>) => {
@@ -308,16 +327,19 @@ export default function AdminDashboard() {
                                                 )}
                                             >
                                                 <p className="text-sm leading-relaxed">{msg.content}</p>
-                                                <span className={clsx(
-                                                    "text-xs block mt-2",
-                                                    msg.sender === "admin" ? "text-blue-100" : "text-gray-400"
+                                                <div className={clsx(
+                                                    "text-xs flex items-center mt-2 gap-1",
+                                                    msg.sender === "admin" ? "text-blue-100 justify-end" : "text-gray-400 justify-start"
                                                 )}>
-                                                    {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                                </span>
+                                                    <span>{new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                    {msg.sender === 'admin' && (
+                                                        msg.status === 'READ' ? <CheckCheck size={14} className="text-blue-200" /> : <Check size={14} className="text-blue-200/70" />
+                                                    )}
+                                                </div>
                                             </div>
                                             {msg.sender === "admin" && (
                                                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-bold text-xs shadow-md flex-shrink-0">
-                                                    A
+                                                    {msg.isAi ? <Bot size={16} /> : "A"}
                                                 </div>
                                             )}
                                         </div>
